@@ -9,7 +9,7 @@ const useQuery = () => new URLSearchParams(useLocation().search)
 const Home = () => {
   const [movies, setMovies] = useState([])
   const [meta, setMeta] = useState({page: 1, total_pages: 1})
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const history = useHistory()
   const query = useQuery()
@@ -44,26 +44,21 @@ const Home = () => {
   return (
     <section>
       <h1>movieDB</h1>
-
       <h2>Popular</h2>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="grid">
-            {movies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
+      {loading && <p>Loading...</p>}
 
-          <Pagination
-            page={meta.page}
-            totalPages={meta.total_pages}
-            onChange={onChangePage}
-          />
-        </>
-      )}
+      <div className="grid">
+        {movies.map(movie => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div>
+
+      <Pagination
+        page={meta.page}
+        totalPages={meta.total_pages}
+        onChange={onChangePage}
+      />
     </section>
   )
 }

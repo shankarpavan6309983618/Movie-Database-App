@@ -4,7 +4,6 @@ import {endpoints} from '../api'
 import MovieCard from '../components/MovieCard'
 import Pagination from '../components/Pagination'
 
-// Fixed arrow-body-style: return directly
 const useQuery = () => new URLSearchParams(useLocation().search)
 
 const SearchResults = () => {

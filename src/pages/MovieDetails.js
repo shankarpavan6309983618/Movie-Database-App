@@ -16,7 +16,7 @@ const MovieDetails = () => {
     ])
       .then(([movieData, creditsData]) => {
         setMovie(movieData)
-        setCast((creditsData.cast || []).slice(0, 20)) // show first 20 cast
+        setCast((creditsData.cast || []).slice(0, 20))
       })
       .catch(console.error)
       .finally(() => setLoading(false))

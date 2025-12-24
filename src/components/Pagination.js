@@ -1,68 +1,48 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 
-const Pagination = ({page, totalPages, onChange}) => {
-  // Handlers (must be before any return)
-  const handlePrev = useCallback(() => {
-    onChange(Math.max(1, page - 1))
-  }, [page, onChange])
+const Pagination = ({page, totalPages = 1, onChange}) => {
+  const onClickPrev = () => {
+    if (page > 1) {
+      onChange(page - 1)
+    }
+  }
 
-  const handleNext = useCallback(() => {
-    onChange(Math.min(totalPages, page + 1))
-  }, [page, totalPages, onChange])
+  const onClickNext = () => {
+    if (page < totalPages) {
+      onChange(page + 1)
+    }
+  }
 
-  const handleGoToPage = useCallback(
-    p => {
-      onChange(p)
-    },
-    [onChange],
-  )
-
-  // Now we can safely return before rendering UI
-  if (!totalPages) return null
-
-  // Compute visible pages
   const pages = []
-  const start = Math.max(1, page - 2)
-  const end = Math.min(totalPages, page + 2)
+  const maxPagesToShow = 5
+  const endPage = Math.min(totalPages, maxPagesToShow)
 
-  for (let p = start; p <= end; p += 1) {
-    pages.push(p)
+  for (let i = 1; i <= endPage; i += 1) {
+    pages.push(i)
   }
 
   return (
     <div className="pagination">
-      <button type="button" onClick={handlePrev} disabled={page === 1}>
+      <button type="button" onClick={onClickPrev} disabled={page === 1}>
         Prev
       </button>
 
-      {start > 1 && (
-        <button type="button" onClick={() => handleGoToPage(1)}>
-          1
-        </button>
-      )}
-
-      {start > 2 && <span className="dots">...</span>}
-
       {pages.map(p => (
         <button
-          type="button"
           key={p}
-          className={p === page ? 'active' : ''}
-          onClick={() => handleGoToPage(p)}
+          type="button"
+          onClick={() => onChange(p)}
+          disabled={p === page}
         >
           {p}
         </button>
       ))}
 
-      {end < totalPages - 1 && <span className="dots">...</span>}
-
-      {end < totalPages && (
-        <button type="button" onClick={() => handleGoToPage(totalPages)}>
-          {totalPages}
-        </button>
-      )}
-
-      <button type="button" onClick={handleNext} disabled={page === totalPages}>
+      <button
+        type="button"
+        onClick={onClickNext}
+        disabled={page === totalPages}
+      >
         Next
       </button>
     </div>
